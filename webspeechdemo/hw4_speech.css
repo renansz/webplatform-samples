@@ -62,7 +62,7 @@ a:hover {
     color: #777;
     visibility: hidden;
 }
-#results {
+#results, #results_agents{
     font-size: 14px;
     font-weight: bold;
     border: 1px solid #ddd;
@@ -90,4 +90,12 @@ p span#words_per_minute{
 
 p#words-stats-slow, p#words-stats-fast {
     display: none;
+}
+
+
+/* CSC412 - HW4 - Automated agent */
+
+button#start_session{
+    display: inline-block;
+    color: #FFF;
 }

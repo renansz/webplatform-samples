@@ -142,6 +142,7 @@ if (!('webkitSpeechRecognition' in window)) {
             create_email = false;
             createEmail();
         }
+
     };
 
     recognition.onresult = function(event) {
@@ -247,10 +248,14 @@ function showButtons(style) {
         return;
     }
     current_style = style;
-    copy_button.style.display = style;
-    email_button.style.display = style;
-    copy_info.style.display = 'none';
-    email_info.style.display = 'none';
+
+    // CSC412 - modifications for automated agent
+    if (typeof(copy_button) != "undefined"){
+        copy_button.style.display = style;
+        email_button.style.display = style;
+        copy_info.style.display = 'none';
+        email_info.style.display = 'none';
+    }
 }
 
 /* CSC 412 - Suggested helper function */
@@ -329,3 +334,5 @@ function speaking_rate(){
         document.getElementById("words-stats-info").style.display = 'inline-block';
     }
 }
+
+
