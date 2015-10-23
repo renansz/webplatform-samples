@@ -375,7 +375,7 @@ function cc_validation(str){
     str.replace('zero', '0');
 
     //test for credit cards
-    if (current_state == 10){
+    if (current_state == 8){
         // test if it has 16 digits
         var result = /(\d\s*){16}/.test(str);
         if (result) return true;
@@ -383,7 +383,7 @@ function cc_validation(str){
 
 
     //test for security code
-    if (current_state == 8 ){
+    if (current_state == 10 ){
         // test if it has 3 digits
         var result = /(\d\s*){3}/.test(str);
         if (result) return true;
@@ -437,7 +437,6 @@ function run_machine(user_input){
                 // update Agents Text box 
                 if (state.screen_output != '')
                     document.getElementById("agents_final_span").innerHTML += state.screen_output;
-                document.getElementById("agents_final_span").innerHTML += "<br/><i>click on the microphone to answer the question</i><br/>";
 
                 // call speech API -- automatically starting recognition was making js die sometimes.
                 startButton(event);
@@ -493,7 +492,6 @@ function run_machine(user_input){
         state = agent_state_machine[current_state];
         document.getElementById("agents_final_span").innerHTML += state.screen_output;
     }
-//    speechSynthesis.speak(msg);
 }
 
 
