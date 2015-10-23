@@ -243,11 +243,11 @@ var agent_state_machine = {
     5: {'action':'speak',
         'text':'Check balance selected. Your current balance is 20 dollars. Do you want to pay your balance now?',
         'input_map':{'null':6},
-        'screen_output':''},
+        'screen_output':'Your current balance is 20 dollars.<br/>Do you want to pay your balance now?<br/><br/>'},
     6: {'action':'listen',
         'text':'',
         'input_map':{'yes':7,'No':1},
-        'screen_output':'Your current balance is 20 dollars.<br/>Do you want to pay your balance now?<br/><br/>'},
+        'screen_output':''},
     7: {'action':'speak',
         'text':'Please provide your credit card number',
         'input_map':{'null':8},
@@ -255,7 +255,7 @@ var agent_state_machine = {
     8: {'action':'listen',
         'text':'',
         'input_map':{'valid':9,'invalid':8},
-        'screen_output':'Please provide your credit card number (12 digits)<br/><br/>'},
+        'screen_output':'Please provide your credit card number (16 digits)<br/><br/>'},
     9: {'action':'speak',
         'text':'Please provide your credit card security code',
         'input_map':{'null':10},
@@ -427,9 +427,6 @@ function run_machine(user_input){
             //update the next state
             current_state = state.input_map['null'];
 
-            // the next state is ran in the onend function of the speech object 
-            // call the next state
-            //run_machine();
         }else{
             // if it is not a speak action, it has to be listen, otherwise it is an error
             assert(state.action == 'listen',"invalid action type: " + state.action);
@@ -442,17 +439,27 @@ function run_machine(user_input){
                     document.getElementById("agents_final_span").innerHTML += state.screen_output;
                 document.getElementById("agents_final_span").innerHTML += "<br/><i>click on the microphone to answer the question</i><br/>";
 
-                // call speech API -- automatically starting recognition was making js die.
-                //startButton(event);
+                // call speech API -- automatically starting recognition was making js die sometimes.
+                startButton(event);
 
                 // activate agent waiting flag
                 agent_waiting = true;
 
             }else{
                 console.log("before trying to recognize:\nagent status: "+agent_waiting+" user input: "+user_input);
-                if (user_input in state.input_map || cc_validation(user_input) || product_validation(user_input) || current_state == 13){
+                if (user_input in state.input_map || current_state == 8|| current_state == 10|| product_validation(user_input) || current_state == 13){
+
                     agent_waiting = false;
                     invalid_answer_count = 0
+
+                    // verify if the states are the ones waiting for the credit card or csv number
+                    if (([8,10].indexOf(current_state)>=0)){
+                        if (cc_validation(user_input))
+                            user_input = 'valid';
+                        else
+                            user_input = 'invalid';
+                    }
+
 
                     //special case on state 13, since I don't care about user's input
                     if (current_state == 13){
