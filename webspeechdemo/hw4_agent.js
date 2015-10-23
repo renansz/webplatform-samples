@@ -442,7 +442,7 @@ function run_machine(user_input){
                     document.getElementById("agents_final_span").innerHTML += state.screen_output;
                 document.getElementById("agents_final_span").innerHTML += "<br/><i>click on the microphone to answer the question</i><br/>";
 
-                // call speech API
+                // call speech API -- automatically starting recognition was making js die.
                 //startButton(event);
 
                 // activate agent waiting flag
